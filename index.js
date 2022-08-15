@@ -36,12 +36,17 @@ app.post("/query", async (req, res) => {
   let [id, fields] = Object.entries(req.body)[0];
   let data = await Data.findOne({ _id: id });
   if (data) {
-    for([key, value] of Object.entries(data.data)) {
-      if(fields.split(",").includes(key)) {
-        outputObj[key] = value;
+    if(fields){
+      for([key, value] of Object.entries(data.data)) {
+        if(fields.split(",").includes(key)) {
+          outputObj[key] = value;
+        }
       }
+      res.status(200).send(outputObj);
     }
-    res.status(200).send(outputObj);
+    else {
+      res.status(200).send(data.data);
+    }
   }else{
     res.status(404).json({})
   }

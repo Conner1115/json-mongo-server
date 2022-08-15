@@ -44,13 +44,19 @@ app.post("/query", async (req, res) => {
       }
       res.status(200).send(outputObj);
     }
-    else {
-      res.status(200).send(data.data);
-    }
   }else{
     res.status(404).json({})
   }
   
+});
+
+app.post("/query-all", async (req, res) => {
+  let data = await Data.findOne({ _id: req.body.id });
+  if (data) {
+    res.json(data.data);
+  }else{
+    res.status(404).json({})
+  }
 });
 
 app.post("/mutate", async (req, res) => {
